@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "62d9c936-a94c-4c63-a40c-64ac48b2be59",
+    "name": "Gym Management API",
+    "description": "Java 25 Gym Management CRUD API. Run Create Member first to save memberId for the following requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "memberId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Member",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Asha Khan\",\n  \"email\": \"asha@example.com\",\n  \"phone\": \"555-0100\",\n  \"membershipType\": \"Monthly\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/api/members"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Member created', function () {",
+              "    pm.response.to.have.status(201);",
+              "    const member = pm.response.json();",
+              "    pm.expect(member.id).to.exist;",
+              "    pm.collectionVariables.set('memberId', member.id);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List Members",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/members"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Members listed', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.json()).to.be.an('array');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Member",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/members/{{memberId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Member fetched', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.json().id).to.eql(Number(pm.collectionVariables.get('memberId')));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Member",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Asha Khan Updated\",\n  \"email\": \"asha@example.com\",\n  \"phone\": \"555-0101\",\n  \"membershipType\": \"Annual\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{baseUrl}}/api/members/{{memberId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Member updated', function () {",
+              "    pm.response.to.have.status(200);",
+              "    pm.expect(pm.response.json().name).to.eql('Asha Khan Updated');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Member",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/members/{{memberId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Member deleted', function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
