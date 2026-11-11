@@ -23,7 +23,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t admission-website:%BUILD_NUMBER% .'
+                bat 'docker build -t gym-management-system:%BUILD_NUMBER% .'
             }
         }
 
@@ -38,7 +38,7 @@ pipeline {
 
         stage('Deploy Container') {
             steps {
-                bat 'docker run -d --name admission-website -p 8081:80 admission-website:%BUILD_NUMBER%'
+                bat 'docker run -d --name gym-management-system -p 8081:80 gym-management-system:%BUILD_NUMBER%'
             }
         }
 
