@@ -3,7 +3,17 @@ pipeline {
     agent any
 
     stages {
-
+        
+        stage('Docker Check') {
+            steps {
+                bat '''
+                    echo Checking Docker
+                    where docker
+                    docker --version
+                    docker ps
+                '''
+            }
+        }
         stage('Git Checkout') {
             steps {
                 echo 'Getting latest source code'
